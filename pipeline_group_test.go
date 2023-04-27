@@ -1,7 +1,9 @@
+//go:build unit
+// +build unit
+
 package gocd
 
 import (
-	"fmt"
 	"testing"
 
 	"github.com/stretchr/testify/require"
@@ -23,21 +25,9 @@ func TestGetPipelineGroup(t *testing.T) {
 	c, server := NewMockClient(t)
 	defer server.Close()
 
-	pipelineGroup, _ := c.GetPipelineGroup("first")
+	pipelineGroup, _, _ := c.GetPipelineGroup("first")
 
 	require.Equal(t, "first", pipelineGroup.Name, "Unexpected pipeline group name")
 	require.Equal(t, "up42", pipelineGroup.Pipelines[0].Name, "Unexpected pipeline name")
 	require.Equal(t, "https://ci.example.com/go/api/admin/pipelines/up42", pipelineGroup.Pipelines[0].Links.Self, "Unexpected pipeline link ref")
-}
-
-func TestCreatePipelineGroup(t *testing.T) {
-	c, server := NewMockClient(t)
-	defer server.Close()
-
-	pipelineGroup := PipelineGroup{
-		Name: "first",
-	}
-
-	pipelineGroupResponse, _ := c.CreatePipelineGroup(pipelineGroup)
-	fmt.Println(pipelineGroupResponse) // TODO - Think about how this can be tested
 }

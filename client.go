@@ -3,6 +3,7 @@ package gocd
 import (
 	"bytes"
 	"encoding/json"
+	"errors"
 	"fmt"
 	"io/ioutil"
 	"net/http"
@@ -13,6 +14,11 @@ type GoCDClient struct {
 	Client   *http.Client
 	Username string
 	Password string
+}
+
+type HttpError struct {
+	StatusCode int
+	Err        error
 }
 
 func New(host, username, password string) GoCDClient {
@@ -26,41 +32,79 @@ func New(host, username, password string) GoCDClient {
 	return gocdClient
 }
 
-func (c *GoCDClient) getRequest(path, apiVersion string, response interface{}) error {
+func (c *GoCDClient) getRequest(path, apiVersion string, response interface{}) (string, error) {
 	req, err := c.setupRequest(path, "GET", apiVersion, nil)
 	if err != nil {
-		return err
+		return "", err
 	}
 
-	err = c.makeRequest(req, response)
+	etag, err := c.makeRequest(req, response)
 	if err != nil {
-		return err
+		return "", err
 	}
 
-	return nil
+	return etag, nil
 }
 
-func (c *GoCDClient) postRequest(path, apiVersion string, data, response interface{}) error {
+func (c *GoCDClient) postRequest(path, apiVersion string, data, response interface{}) (string, error) {
 	b, err := json.Marshal(data)
 	if err != nil {
-		return err
+		return "", err
 	}
 	dataBody := bytes.NewReader(b)
 
 	req, err := c.setupRequest(path, "POST", apiVersion, dataBody)
 	if err != nil {
-		return err
+		return "", err
 	}
 
 	req.Header.Set("Content-Type", "application/json")
 
-	err = c.makeRequest(req, &response)
+	etag, err := c.makeRequest(req, &response)
+	if err != nil {
+		return "", err
+	}
+
+	return etag, nil
+}
+
+func (c *GoCDClient) putRequest(path, apiVersion, etag string, data, response interface{}) (string, error) {
+	b, err := json.Marshal(data)
+	if err != nil {
+		return "", err
+	}
+	dataBody := bytes.NewReader(b)
+
+	req, err := c.setupRequest(path, "PUT", apiVersion, dataBody)
+	if err != nil {
+		return "", err
+	}
+
+	req.Header.Set("Content-Type", "application/json")
+	if etag != "" {
+		req.Header.Set("ETag", etag)
+	}
+
+	etag, err = c.makeRequest(req, &response)
+	if err != nil {
+		return "", err
+	}
+
+	return etag, nil
+}
+
+func (c *GoCDClient) deleteRequest(path, apiVersion string, response interface{}) error {
+	req, err := c.setupRequest(path, "DELETE", apiVersion, nil)
+	if err != nil {
+		return err
+	}
+
+	_, err = c.makeRequest(req, &response)
 	if err != nil {
 		return err
 	}
 
 	return nil
-
 }
 
 func (c *GoCDClient) setupRequest(path, method, apiVersion string, data *bytes.Reader) (*http.Request, error) {
@@ -91,28 +135,31 @@ func (c *GoCDClient) setupRequest(path, method, apiVersion string, data *bytes.R
 	return req, nil
 }
 
-func (c *GoCDClient) makeRequest(req *http.Request, response interface{}) error {
+func (c *GoCDClient) makeRequest(req *http.Request, response interface{}) (string, error) {
 	resp, err := c.Client.Do(req)
 	if err != nil {
-		return err
+		return "", err
 	}
 
 	defer resp.Body.Close()
-	if resp.StatusCode != 200 {
-		return err // TODO - Create this error
+
+	body, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return "", err
 	}
 
-	body, err := ioutil.ReadAll(resp.Body) // TODO - Handle error
-	if err != nil {
-		fmt.Printf("Error reading boxy for %s", req.URL)
-		return err
+	if resp.StatusCode != 200 {
+		return "", errors.New(fmt.Sprintf("status code %d response code. response body: %s", resp.StatusCode, string(body)))
 	}
 
 	if err := json.Unmarshal(body, &response); err != nil { // Parse []byte to the go struct pointer
-		fmt.Printf("Can not unmarshal JSON: %s\n", err)
-		return err
+		return "", err
 	}
 
-	return nil
+	return resp.Header.Get("ETag"), nil
 
+}
+
+func (h *HttpError) Error() string {
+	return fmt.Sprintf("status %d: error %v", h.StatusCode, h.Err)
 }

@@ -30,3 +30,7 @@ func (l *Links) UnmarshalJSON(b []byte) error {
 
 	return nil
 }
+
+type DeleteMessage struct {
+	Message string `json:"message"`
+}
