@@ -22,6 +22,19 @@ jobs:
 
     - name: Unit test
       run: go test -v ./... -tags=unit
+
+    - name: Ensure GoCD server has started
+      shell: bash
+      run: |
+        while true; do
+          response=$(curl -s http://localhost:8153/go/api/version | grep "GoCD server is starting")
+          if [[ "0" == $(echo -n "$response" | wc -c) ]]; then
+            echo "GoCD server has started"
+            break
+          fi
+          echo "Waiting for GoCD server to start. Response: $response"
+          sleep 1
+        done
     
     - name: Integration test
       run: go test -v ./... -tags=integration
