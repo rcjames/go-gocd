@@ -44,4 +44,4 @@ jobs:
     steps:
     - uses: actions/checkout@v3
     - name: Conventional Commit check
-      uses: aevea/commitsar@v0.20.1
+      uses: docker://aevea/commitsar
