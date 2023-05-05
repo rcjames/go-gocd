@@ -10,7 +10,7 @@ jobs:
       gocd:
         image: gocd/gocd-server:v23.1.0
         ports:
-        - 8153:8513
+        - 8153:8153
 
     steps:
     - uses: actions/checkout@v3
@@ -27,7 +27,7 @@ jobs:
       shell: bash
       run: |
         while true; do
-          response=$(curl -s http://0.0.0.0:8153/go/api/version | grep "GoCD server is starting" || true)
+          response=$(curl -s http://localhost:8153/go/api/version | grep "GoCD server is starting" || true)
           if [[ "0" == $(echo -n "$response" | wc -c) ]]; then
             echo "GoCD server has started"
             break
