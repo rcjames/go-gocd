@@ -6,6 +6,12 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
+    services:
+      gocd:
+        image: gocd/gocd-server:v23.1.0
+        ports:
+        - 8153:8513
+
     steps:
     - uses: actions/checkout@v3
 
@@ -16,3 +22,9 @@ jobs:
 
     - name: Unit test
       run: go test -v ./... -tags=unit
+    
+    - name: Integration test
+      run: go test -v ./... -tags=integration
+
+    - name: Go build
+      run go build -v ./...
