@@ -1,0 +1,49 @@
+name: Go pipeline
+
+on:
+- pull_request
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    services:
+      gocd:
+        image: gocd/gocd-server:v23.1.0
+        ports:
+        - 8153:8153
+
+    steps:
+    - uses: actions/checkout@v3
+
+    - name: Set up Go
+      uses: actions/setup-go@v4
+      with:
+        go-version: '1.20'
+
+    - name: Unit test
+      run: go test -v ./... -tags=unit
+
+    - name: Ensure GoCD server has started
+      shell: bash
+      run: |
+        while true; do
+          response=$(curl -s http://localhost:8153/go/api/version | grep "GoCD server is starting" || true)
+          if [[ "0" == $(echo -n "$response" | wc -c) ]]; then
+            echo "GoCD server has started"
+            break
+          fi
+          echo "Waiting for GoCD server to start. Response: $response"
+          sleep 1
+        done
+    
+    - name: Integration test
+      run: go test -v ./... -tags=integration
+
+  conventional-commit-check:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v3
+      with:
+        fetch-depth: '0'
+    - name: Conventional Commit check
+      uses: docker://aevea/commitsar
