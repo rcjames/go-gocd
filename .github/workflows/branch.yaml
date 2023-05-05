@@ -47,3 +47,5 @@ jobs:
         fetch-depth: '0'
     - name: Conventional Commit check
       uses: docker://aevea/commitsar
+    - name: Conventional Commit PR check
+      uses: aslafy-z/conventional-pr-title-action@v3
