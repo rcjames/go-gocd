@@ -39,5 +39,9 @@ jobs:
     - name: Integration test
       run: go test -v ./... -tags=integration
 
-    - name: Go build
-      run: go build -v ./...
+  conventional-commit-check:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v3
+    - name: Conventional Commit check
+      uses: aevea/commitsar@v0.20.1
