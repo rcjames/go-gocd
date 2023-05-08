@@ -1,7 +1,10 @@
 name: Go pipeline
 
 on:
-- pull_request
+  pull_request:
+    paths-ignore:
+      - 'README.md'
+      - 'CHANGELOG.md'
 
 jobs:
   build:
