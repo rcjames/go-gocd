@@ -5,9 +5,9 @@ import (
 )
 
 type Links struct {
-	Self string
-	Doc  string
-	Find string
+	Self string `json:"self,omitempty"`
+	Doc  string `json:"doc,omitempty"`
+	Find string `json:"find,omitempty"`
 }
 
 func (l *Links) UnmarshalJSON(b []byte) error {
