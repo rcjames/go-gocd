@@ -66,10 +66,16 @@ func TestCreatePipeline(t *testing.T) {
 	pipeline.AddStage(pipelineStage)
 	pipeline.AddMaterial(pipelineMaterial)
 
-	pipelineResponse, _, err := c.CreatePipeline(pipeline)
+	pipelineResponse, pipelineEtag, err := c.CreatePipeline(pipeline)
 	require.Empty(t, err, "create pipeline should not have thrown an error")
 	require.Equal(t, pipelineName, pipelineResponse.Name, "unexpected pipeline name")
 	require.Equal(t, materialBranch, pipelineResponse.Materials[0].Attributes.Branch, "unexpected meterial branch")
+
+	updatedPipelineStageName := "stageA"
+	pipelineResponse.Stages[0].Name = updatedPipelineStageName
+	pipelineResponse2, _, err := c.UpdatePipeline(pipelineResponse.Name, pipelineEtag, pipelineResponse)
+	require.Empty(t, err, "update pipeline should not have thrown an error")
+	require.Equal(t, updatedPipelineStageName, pipelineResponse2.Stages[0].Name, "updated pipeline stage name is not expected")
 
 	msg, err := c.DeletePipeline(pipelineName)
 	require.Empty(t, err, "delete pipeline should not have thown an error")
