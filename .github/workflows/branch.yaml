@@ -20,6 +20,9 @@ jobs:
     - name: Create k8s Kind Cluster
       uses: helm/kind-action@v1.7.0
 
+    - name: Set kubecontext
+      run: kubectl config use-context kind-chart-testing
+
     - name: 'Deploy'
       uses: 'vimeda/helm@v1.7.0'
       with:
