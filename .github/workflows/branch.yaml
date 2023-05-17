@@ -28,10 +28,6 @@ jobs:
         chart: 'gocd/gocd'
         repository: 'https://gocd.github.io/helm-chart'
         token: '${{ github.token }}'
-        value-files: >-
-        [
-          "values.yaml", 
-        ]
 
     - name: Check ingresses
       run: kubectl get ingress -A
