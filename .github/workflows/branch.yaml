@@ -27,7 +27,7 @@ jobs:
         namespace: 'gocd'
         chart: 'gocd/gocd'
         repo: 'https://gocd.github.io/helm-chart'
-        repo-name: 'gocd'
+        repo-alias: 'gocd'
         token: '${{ github.token }}'
 
     - name: Check ingresses
