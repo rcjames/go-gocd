@@ -21,7 +21,7 @@ jobs:
       uses: helm/kind-action@v1.7.0
 
     - name: 'Deploy'
-      uses: 'vimeda/helm@v1.7'
+      uses: 'vimeda/helm@v1.7.0'
       with:
         release: 'gocd'
         namespace: 'gocd'
