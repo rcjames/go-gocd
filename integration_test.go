@@ -19,15 +19,20 @@ func TestCreatePipeline(t *testing.T) {
 		Name: pipelineGroupName,
 	}
 
-	pipelineGroupResponse, _, err := c.CreatePipelineGroup(pipelineGroup)
+	pipelineGroupResponse, etag, err := c.CreatePipelineGroup(pipelineGroup)
 	require.Empty(t, err, "create pipeline group should not have thrown an error")
 	require.Equal(t, pipelineGroup.Name, pipelineGroupResponse.Name, "unexpected pipeline group name on creation")
+
+	pipelineGroupName = "second"
+	pipelineGroupResponse.Name = pipelineGroupName
+	pipelineGroupResponse2, _, err := c.UpdatePipelineGroup(pipelineGroup.Name, etag, pipelineGroupResponse)
+	require.Empty(t, err, "update pipeline group should not have thrown an error")
+	require.Equal(t, pipelineGroupName, pipelineGroupResponse2.Name, "unexpected pipeline group name on update")
 
 	pipelineGroups, err := c.GetAllPipelineGroups()
 	require.Empty(t, err, "get all pipeline groups should not have thrown an error")
 	require.Equal(t, 1, len(pipelineGroups), "unexpected number of pipeline groups")
 
-	// TODO - Test UpdatePipelineGroup (trouble with pipeline changing (etags???))
 	pipelineName := "pipeline"
 
 	pipelineTask := PipelineTask{
@@ -82,10 +87,9 @@ func TestCreatePipeline(t *testing.T) {
 	want := fmt.Sprintf("Pipeline with name '%s' was deleted successfully!", pipelineName)
 	require.Equal(t, want, msg, "unexpected message when deleting pipeline")
 
-	msg, err = c.DeletePipelineGroup(pipelineGroup.Name)
+	msg, err = c.DeletePipelineGroup(pipelineGroupName)
 	require.Empty(t, err, "delete pipeline group should not have thrown an error")
-
-	want = fmt.Sprintf("Pipeline group with name '%s' was deleted successfully!", pipelineGroup.Name)
+	want = fmt.Sprintf("Pipeline group with name '%s' was deleted successfully!", pipelineGroupName)
 	require.Equal(t, want, msg, "unexpected message when deleting pipeline group")
 
 	pipelineGroups, err = c.GetAllPipelineGroups()
