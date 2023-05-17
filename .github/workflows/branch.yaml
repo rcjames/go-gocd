@@ -23,6 +23,9 @@ jobs:
     - name: Set kubecontext
       run: kubectl config use-context kind-chart-testing
 
+    - name: Find kube config
+      run: find . -name 'config'
+
     - name: 'Deploy'
       uses: 'vimeda/helm@v1.7.0'
       with:
