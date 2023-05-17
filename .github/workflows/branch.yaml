@@ -9,12 +9,6 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
-    services:
-      gocd:
-        image: gocd/gocd-server:v23.1.0
-        ports:
-        - 8153:8153
-
     steps:
     - uses: actions/checkout@v3
 
@@ -22,6 +16,25 @@ jobs:
       uses: actions/setup-go@v4
       with:
         go-version: '1.20'
+
+    - name: Create k8s Kind Cluster
+      uses: helm/kind-action@v1.7.0
+
+    - name: 'Deploy'
+      uses: 'deliverybot/helm@v1'
+      with:
+        release: 'gocd'
+        namespace: 'gocd'
+        chart: 'gocd/gocd'
+        repository: 'https://gocd.github.io/helm-chart'
+        token: '${{ github.token }}'
+        value-files: >-
+        [
+          "values.yaml", 
+        ]
+
+    - name: Check ingresses
+      run: kubectl get ingress -A
 
     - name: Unit test
       run: go test -v ./... -tags=unit
