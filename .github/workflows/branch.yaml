@@ -21,12 +21,13 @@ jobs:
       uses: helm/kind-action@v1.7.0
 
     - name: 'Deploy'
-      uses: 'deliverybot/helm@v1'
+      uses: 'vimeda/helm@v1.7'
       with:
         release: 'gocd'
         namespace: 'gocd'
         chart: 'gocd/gocd'
-        repository: 'https://gocd.github.io/helm-chart'
+        repo: 'https://gocd.github.io/helm-chart'
+        repo-name: 'gocd'
         token: '${{ github.token }}'
 
     - name: Check ingresses
