@@ -5,9 +5,9 @@ import (
 )
 
 type Links struct {
-	Self string
-	Doc  string
-	Find string
+	Self string `json:"self,omitempty"`
+	Doc  string `json:"doc,omitempty"`
+	Find string `json:"find,omitempty"`
 }
 
 func (l *Links) UnmarshalJSON(b []byte) error {
@@ -16,17 +16,23 @@ func (l *Links) UnmarshalJSON(b []byte) error {
 
 	m := f.(map[string]interface{})
 
-	selfMap := m["self"]
-	selfData := selfMap.(map[string]interface{})
-	l.Self = selfData["href"].(string)
+	selfMap, ok := m["self"]
+	if ok {
+		selfData := selfMap.(map[string]interface{})
+		l.Self = selfData["href"].(string)
+	}
 
-	docMap := m["doc"]
-	docData := docMap.(map[string]interface{})
-	l.Doc = docData["href"].(string)
+	docMap, ok := m["doc"]
+	if ok {
+		docData := docMap.(map[string]interface{})
+		l.Doc = docData["href"].(string)
+	}
 
-	findMap := m["find"]
-	findData := findMap.(map[string]interface{})
-	l.Find = findData["href"].(string)
+	findMap, ok := m["find"]
+	if ok {
+		findData := findMap.(map[string]interface{})
+		l.Find = findData["href"].(string)
+	}
 
 	return nil
 }

@@ -7,6 +7,7 @@ import (
 	"fmt"
 	"io/ioutil"
 	"net/http"
+	"strings"
 )
 
 type GoCDClient struct {
@@ -82,7 +83,7 @@ func (c *GoCDClient) putRequest(path, apiVersion, etag string, data, response in
 
 	req.Header.Set("Content-Type", "application/json")
 	if etag != "" {
-		req.Header.Set("ETag", etag)
+		req.Header.Set("If-Match", etag)
 	}
 
 	etag, err = c.makeRequest(req, &response)
@@ -156,8 +157,9 @@ func (c *GoCDClient) makeRequest(req *http.Request, response interface{}) (strin
 		return "", err
 	}
 
-	return resp.Header.Get("ETag"), nil
+	etag := strings.ReplaceAll(resp.Header.Get("ETag"), string('"'), "")
 
+	return etag, nil
 }
 
 func (h *HttpError) Error() string {
