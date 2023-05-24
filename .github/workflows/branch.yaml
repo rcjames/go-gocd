@@ -26,6 +26,9 @@ jobs:
     - name: Debug kubeconfig
       run: cat /home/runner/.kube/config
 
+    - name: Debug home
+      run: env
+
     - name: Move kubeconfig
       run: |
         mkdir -p /home/runner/work/_temp/_github_home/.kube
