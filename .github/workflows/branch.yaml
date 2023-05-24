@@ -27,7 +27,7 @@ jobs:
       run: cat /home/runner/.kube/config
 
     - name: Move kubeconfig
-      run: cp /home/runner/.kube/config /home/runner/work/go-gocd/go-gocd/
+      run: cp /home/runner/.kube/config /home/runner/work/go-gocd/go-gocd/kubeconfig.yml
 
     - name: 'Deploy'
       uses: 'vimeda/helm@v1.7.0'
