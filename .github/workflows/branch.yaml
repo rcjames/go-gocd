@@ -26,6 +26,12 @@ jobs:
     - name: Debug kubeconfig
       run: cat /home/runner/.kube/config
 
+    - name: Check Namespaces
+      run: kubectl get namespaces --kubeconfig=/home/runner/.kube/config
+
+    - name: Check Namespaces 2
+      run: kubectl get namespaces
+
     - name: 'Deploy'
       uses: 'vimeda/helm@v1.7.0'
       with:
