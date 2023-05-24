@@ -47,6 +47,7 @@ jobs:
         token: '${{ github.token }}'
       env:
         KUBECONFIG_FILE: '/github/workspace/.config'
+        HOME: '/github/home'
 
     - name: Check ingresses
       run: kubectl get ingress -A
