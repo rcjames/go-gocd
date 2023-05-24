@@ -26,11 +26,8 @@ jobs:
     - name: Debug kubeconfig
       run: cat /home/runner/.kube/config
 
-    - name: Check Namespaces
-      run: kubectl get namespaces --kubeconfig=/home/runner/.kube/config
-
-    - name: Check Namespaces 2
-      run: kubectl get namespaces
+    - name: Move kubeconfig
+      run: cp /home/runner/.kube/config /home/runner/work/go-gocd/go-gocd/
 
     - name: 'Deploy'
       uses: 'vimeda/helm@v1.7.0'
@@ -42,7 +39,7 @@ jobs:
         repo-alias: 'gocd'
         token: '${{ github.token }}'
       env:
-        KUBECONFIG_FILE: '/home/runner/.kube/config'
+        KUBECONFIG_FILE: '/github/workspace/.config'
 
     - name: Check ingresses
       run: kubectl get ingress -A
