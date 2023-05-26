@@ -9,12 +9,6 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
-    services:
-      gocd:
-        image: gocd/gocd-server:v23.1.0
-        ports:
-        - 8153:8153
-
     steps:
     - uses: actions/checkout@v3
 
@@ -22,6 +16,39 @@ jobs:
       uses: actions/setup-go@v4
       with:
         go-version: '1.20'
+
+    - name: Create k8s Kind Cluster
+      uses: helm/kind-action@v1.7.0
+
+    - name: Set kubecontext
+      run: kubectl config use-context kind-chart-testing
+
+    - name: Debug kubeconfig
+      run: cat /home/runner/.kube/config
+
+    - name: Set environment variable
+      run: | 
+        echo "KUBECONFIG<<EOF" >> "$GITHUB_ENV"
+        cat /home/runner/.kube/config >> "$GITHUB_ENV"
+        echo "EOF" >> "$GITHUB_ENV"
+
+    - name: Debug home
+      run: env
+
+    - name: 'Deploy'
+      uses: 'vimeda/helm@v1.7.0'
+      with:
+        release: 'gocd'
+        namespace: 'gocd'
+        chart: 'gocd/gocd'
+        repo: 'https://gocd.github.io/helm-chart'
+        repo-alias: 'gocd'
+        token: '${{ github.token }}'
+      env:
+        KUBECONFIG_FILE: '${{env.KUBECONFIG}}'
+
+    - name: Check ingresses
+      run: kubectl get ingress -A
 
     - name: Unit test
       run: go test -v ./... -tags=unit
