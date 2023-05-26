@@ -30,7 +30,9 @@ jobs:
       run: echo "${{secrets.KUBECONFIG_FILE}}"
 
     - name: Set environment variable
-      run: echo "KUBECONFIG_FILE=$(cat /home/runner/.kube/config)" >> "$GITHUB_ENV"
+      run: | 
+        echo "KUBECONFIG_FILE=$(cat /home/runner/.kube/config)" >> "$GITHUB_ENV"
+        cat "$GITHUB_ENV"
 
     - name: Debug home
       run: env
