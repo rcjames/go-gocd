@@ -26,9 +26,6 @@ jobs:
     - name: Debug kubeconfig
       run: cat /home/runner/.kube/config
 
-    - name: Echo secret
-      run: echo "${{secrets.KUBECONFIG_FILE}}"
-
     - name: Set environment variable
       run: | 
         echo "KUBECONFIG<<EOF" >> "$GITHUB_ENV"
