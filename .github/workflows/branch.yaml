@@ -26,15 +26,11 @@ jobs:
     - name: Debug kubeconfig
       run: cat /home/runner/.kube/config
 
+    - name: Set environment variable
+      run: echo "KUBECONFIG_FILE=$(cat /home/runner/.kube/config)" >> "$GITHUb_ENV"
+
     - name: Debug home
       run: env
-
-    - name: Move kubeconfig
-      run: |
-        mkdir -p /home/runner/work/_temp/_github_home/.kube
-        cp /home/runner/.kube/config /home/runner/work/_temp/_github_home/.kube/
-        mkdir /home/runner/work/go-gocd/go-gocd/.kube
-        cp /home/runner/.kube/config /home/runner/work/go-gocd/go-gocd/.kube/
 
     - name: 'Deploy'
       uses: 'vimeda/helm@v1.7.0'
@@ -46,8 +42,7 @@ jobs:
         repo-alias: 'gocd'
         token: '${{ github.token }}'
       env:
-        KUBECONFIG_FILE: '/github/workspace/.config'
-        HOME: '/github/home'
+        KUBECONFIG_FILE: '${{env.KUBECONFIG_FILE}}'
 
     - name: Check ingresses
       run: kubectl get ingress -A
