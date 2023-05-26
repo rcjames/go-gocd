@@ -31,8 +31,9 @@ jobs:
 
     - name: Set environment variable
       run: | 
-        echo "KUBECONFIG_FILE=$(cat /home/runner/.kube/config)" >> "$GITHUB_ENV"
-        cat "$GITHUB_ENV"
+        echo "KUBECONFIG_FILE<<EOF" >> "$GITHUB_ENV"
+        cat /home/runner/.kube/config >> "$GITHUB_ENV"
+        echo "EOF" >> "$GITHUB_ENV"
 
     - name: Debug home
       run: env
