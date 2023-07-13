@@ -26,10 +26,18 @@ func (c *GoCDClient) GetArtifactStore(id string) (ArtifactStore, string, error) 
 
 }
 
-/*
 func (c *GoCDClient) CreateArtifactStore(as ArtifactStore) (ArtifactStore, string, error) {
+	var artifactStoreResponse ArtifactStore
+
+	etag, err := c.postRequest("go/api/admin/artifact_stores", "", as, &artifactStoreResponse)
+	if err != nil {
+		return artifactStoreResponse, "", err
+	}
+
+	return artifactStoreResponse, etag, nil
 }
 
+/*
 func (c *GoCDClient) UpdateArtifactStore(id, etag string, as ArtifactStore) (ArtifactStore, string, error) {
 
 }
@@ -38,3 +46,7 @@ func (c *GoCDClient) DeleteArtifactStore(id string) (string, error) {
 
 }
 */
+
+func (as *ArtifactStore) AddProperty(cp ConfigurationProperty) {
+	as.Properties = append(as.Properties, cp)
+}

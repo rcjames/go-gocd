@@ -40,3 +40,10 @@ func (l *Links) UnmarshalJSON(b []byte) error {
 type DeleteMessage struct {
 	Message string `json:"message"`
 }
+
+type ConfigurationProperty struct {
+	Key            string `json:"key"`
+	Value          string `json:"value,omitempty"`
+	EncryptedValue string `json:"encrypted_value,omitempty"`
+	IsSecure       bool   `json:"is_secure,omitempty"`
+}

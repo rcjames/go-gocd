@@ -4,7 +4,7 @@
 package gocd
 
 import (
-	"fmt"
+	//	"fmt"
 	"testing"
 
 	"github.com/stretchr/testify/require"
@@ -95,4 +95,32 @@ func TestCreatePipeline(t *testing.T) {
 	pipelineGroups, err = c.GetAllPipelineGroups()
 	require.Empty(t, err, "get all pipeline groups should not have thrown an error")
 	require.Equal(t, 0, len(pipelineGroups), "unexpected number of pipeline groups after delete")
+}
+
+func TestCreateArtifactStore(t *testing.T) {
+	c := New("http://localhost:8153", "", "")
+
+	artifactStoreId := "docker"
+	artifactStore := ArtifactStore{
+		Id:       artifactStoreId,
+		PluginId: "cd.go.artifact.docker.registry",
+	}
+
+	var properties = make(map[string]string)
+	properties["RegistryURL"] = "https://your_docker_registry_url"
+	properties["Username"] = "admin"
+	properties["Password"] = "badger"
+	properties["RegistryType"] = "other"
+	for k, v := range properties {
+		p := ConfigurationProperty{
+			Key:   k,
+			Value: v,
+		}
+		artifactStore.AddProperty(p)
+	}
+
+	artifactStoreResponse, _, err := c.CreateArtifactStore(artifactStore)
+	require.Empty(t, err, "create artifact store should not have thrown an error")
+	require.Equal(t, artifactStoreId, artifactStoreResponse.Id, "unexpected artifact store id")
+
 }
