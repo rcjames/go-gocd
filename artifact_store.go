@@ -37,11 +37,19 @@ func (c *GoCDClient) CreateArtifactStore(as ArtifactStore) (ArtifactStore, strin
 	return artifactStoreResponse, etag, nil
 }
 
-/*
 func (c *GoCDClient) UpdateArtifactStore(id, etag string, as ArtifactStore) (ArtifactStore, string, error) {
+	var artifactStore ArtifactStore
+	requestPath := fmt.Sprintf("go/api/admin/artifact_stores/%s", id)
 
+	etag, err := c.putRequest(requestPath, "", etag, as, &artifactStore)
+	if err != nil {
+		return artifactStore, "", err
+	}
+
+	return artifactStore, etag, err
 }
 
+/*
 func (c *GoCDClient) DeleteArtifactStore(id string) (string, error) {
 
 }
