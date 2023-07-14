@@ -49,11 +49,17 @@ func (c *GoCDClient) UpdateArtifactStore(id, etag string, as ArtifactStore) (Art
 	return artifactStore, etag, err
 }
 
-/*
 func (c *GoCDClient) DeleteArtifactStore(id string) (string, error) {
+	var message DeleteMessage
+	requestPath := fmt.Sprintf("go/api/admin/artifact_stores/%s", id)
 
+	err := c.deleteRequest(requestPath, "", &message)
+	if err != nil {
+		return "", err
+	}
+
+	return message.Message, nil
 }
-*/
 
 func (as *ArtifactStore) AddProperty(cp ConfigurationProperty) {
 	as.Properties = append(as.Properties, cp)
