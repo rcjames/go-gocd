@@ -27,6 +27,7 @@ DOCKER_REGISTRY_PLUGIN_FILE=docker-registry-artifact-plugin-${DOCKER_REGISTRY_PL
 
 if [[ ! -f "${PWD}/test-plugins/${DOCKER_REGISTRY_PLUGIN_FILE}" ]]; then
   echo "$(date +'%F %T') Downloading plugins"
+  mkdir -p ${PWD}/test-plugins
   wget -O ${PWD}/test-plugins/${DOCKER_REGISTRY_PLUGIN_FILE} https://github.com/gocd/docker-registry-artifact-plugin/releases/download/v${DOCKER_REGISTRY_PLUGIN_VERSION}/${DOCKER_REGISTRY_PLUGIN_FILE}
 fi
 
