@@ -96,3 +96,50 @@ func TestCreatePipeline(t *testing.T) {
 	require.Empty(t, err, "get all pipeline groups should not have thrown an error")
 	require.Equal(t, 0, len(pipelineGroups), "unexpected number of pipeline groups after delete")
 }
+
+func TestCreateArtifactStore(t *testing.T) {
+	c := New("http://localhost:8153", "", "")
+
+	artifactStoreId := "docker"
+	artifactStore := ArtifactStore{
+		Id:       artifactStoreId,
+		PluginId: "cd.go.artifact.docker.registry",
+	}
+
+	var properties = make(map[string]string)
+	properties["RegistryURL"] = "https://your_docker_registry_url"
+	properties["Username"] = "admin"
+	properties["Password"] = "badger"
+	properties["RegistryType"] = "other"
+	for k, v := range properties {
+		p := ConfigurationProperty{
+			Key:   k,
+			Value: v,
+		}
+		artifactStore.AddProperty(p)
+	}
+
+	artifactStoreResponse, etag, err := c.CreateArtifactStore(artifactStore)
+	require.Empty(t, err, "create artifact store should not have thrown an error")
+	require.Equal(t, artifactStoreId, artifactStoreResponse.Id, "unexpected artifact store id")
+
+	artifactStores, err := c.GetAllArtifactStores()
+	require.Empty(t, err, "get all artifact stores should not have thrown an error")
+	require.Equal(t, 1, len(artifactStores), "unexpected number of artifact stores")
+
+	var usernameKey int
+	for i, p := range artifactStoreResponse.Properties {
+		if p.Key == "Username" {
+			usernameKey = i
+		}
+	}
+	artifactStoreResponse.Properties[usernameKey].Value = "root"
+	artifactStoreResponse2, _, err := c.UpdateArtifactStore(artifactStoreId, etag, artifactStoreResponse)
+	require.Empty(t, err, "update artifact store should not have thrown an error")
+	require.Equal(t, "root", artifactStoreResponse2.GetPropertyValue("Username"), "unexpected registry password")
+
+	msg, err := c.DeleteArtifactStore(artifactStoreId)
+	require.Empty(t, err, "delete artifact store should not have thrown an error")
+	want := fmt.Sprintf("Artifact store with id '%s' was deleted successfully!", artifactStoreId)
+	require.Equal(t, want, msg, "unexpected message when deleting artifact store")
+}
