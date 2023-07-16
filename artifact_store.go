@@ -64,3 +64,13 @@ func (c *GoCDClient) DeleteArtifactStore(id string) (string, error) {
 func (as *ArtifactStore) AddProperty(cp ConfigurationProperty) {
 	as.Properties = append(as.Properties, cp)
 }
+
+func (as *ArtifactStore) GetPropertyValue(key string) string {
+	for _, p := range as.Properties {
+		if p.Key == key {
+			return p.Value
+		}
+	}
+
+	return ""
+}

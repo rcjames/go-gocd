@@ -136,7 +136,7 @@ func TestCreateArtifactStore(t *testing.T) {
 	artifactStoreResponse.Properties[usernameKey].Value = "root"
 	artifactStoreResponse2, _, err := c.UpdateArtifactStore(artifactStoreId, etag, artifactStoreResponse)
 	require.Empty(t, err, "update artifact store should not have thrown an error")
-	require.Equal(t, "root", artifactStoreResponse2.Properties[usernameKey].Value, "unexpected registry password")
+	require.Equal(t, "root", artifactStoreResponse2.GetPropertyValue("Username"), "unexpected registry password")
 
 	msg, err := c.DeleteArtifactStore(artifactStoreId)
 	require.Empty(t, err, "delete artifact store should not have thrown an error")

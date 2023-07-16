@@ -8,7 +8,7 @@ type Pipeline struct {
 	Name                 string                        `json:"name,omitempty"`
 	Template             string                        `json:"template,omitempty"`
 	Origin               *PipelineConfigRepo           `json:"origin,omitempty"`
-	Parameters           []PipelineParameter           `json:"parameters,omitempty`
+	Parameters           []PipelineParameter           `json:"parameters,omitempty"`
 	EnvironmentVariables []PipelineEnvironmentVariable `json:"environment_variables,omitempty"`
 	Materials            []PipelineMaterial            `json:"materials,omitempty"`
 	Stages               []PipelineStage               `json:"stages,omitempty"`
