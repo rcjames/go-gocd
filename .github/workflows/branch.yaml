@@ -7,13 +7,8 @@ on:
       - 'CHANGELOG.md'
 
 jobs:
-  build:
+  unit-test:
     runs-on: ubuntu-latest
-    # services:
-    #   gocd:
-    #     image: gocd/gocd-server:v23.1.0
-    #     ports:
-    #     - 8153:8153
 
     steps:
     - uses: actions/checkout@v3
@@ -26,7 +21,18 @@ jobs:
     - name: Unit test
       run: go test -v ./... -tags=unit
 
-    - name: Ensure GoCD server has started
+  integration-test:
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v3
+
+    - name: Set up Go
+      uses: actions/setup-go@v4
+      with:
+        go-version: '1.20'
+
+    - name: Run integration tests
       shell: bash
       run: |
         ./run-integration-test.sh
