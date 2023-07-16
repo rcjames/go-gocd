@@ -66,6 +66,6 @@ func (p *Pipeline) AddStage(stage PipelineStage) {
 	p.Stages = append(p.Stages, stage)
 }
 
-func (p *Pipeline) AddMaterial(material PipelineMaterial) {
+func (p *Pipeline) AddMaterial(material Material) {
 	p.Materials = append(p.Materials, material)
 }
