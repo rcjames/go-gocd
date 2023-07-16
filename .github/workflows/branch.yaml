@@ -9,11 +9,11 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
-    services:
-      gocd:
-        image: gocd/gocd-server:v23.1.0
-        ports:
-        - 8153:8153
+    # services:
+    #   gocd:
+    #     image: gocd/gocd-server:v23.1.0
+    #     ports:
+    #     - 8153:8153
 
     steps:
     - uses: actions/checkout@v3
