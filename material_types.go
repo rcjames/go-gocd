@@ -35,9 +35,26 @@ type MaterialAttributesFilter struct {
 	Ignore []string `json:"ignore,omitempty"`
 }
 
+type MaterialModification struct {
+	EmailAddress     string `json:"email_address,omitempty"`
+	Id               int    `json:"id"`
+	ModificationTime int    `json:"modification_time"`
+	UserName         string `json:"user_name,omitempty"`
+	Comment          string `json:"comment,omitempty"`
+	Revision         string `json:"revision"`
+}
+
 type GetAllMaterialsResponse struct {
 	Links    Links `json:"_links,omitempty"`
 	Embedded struct {
 		Materials []Material `json:"materials"`
+	} `json:"_embedded"`
+}
+
+type GetMaterialModificationsResponse struct {
+	Links    Links `json:"_links,omitempty"`
+	Embedded struct {
+		Modifications []MaterialModification `json:"modifications,omitempty"`
+		Pagination    Pagination             `json:"pagination,omitempty"`
 	} `json:"_embedded"`
 }
