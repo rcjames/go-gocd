@@ -4,7 +4,7 @@ set -e
 
 function wait-for-gocd-start() {
   # Add an initial delay for the server to start responding
-  sleep 5
+  sleep 10
 
   while true; do
     response=$(curl -s http://localhost:8153/go/api/version | grep "GoCD server is starting" || true)

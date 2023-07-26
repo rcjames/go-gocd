@@ -47,3 +47,9 @@ type ConfigurationProperty struct {
 	EncryptedValue string `json:"encrypted_value,omitempty"`
 	IsSecure       bool   `json:"is_secure,omitempty"`
 }
+
+type Pagination struct {
+	Offset   int `json:"offset,omitempty"`
+	Total    int `json:"total"`
+	PageSize int `json:"page_size,omitempty"`
+}
