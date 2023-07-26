@@ -65,7 +65,7 @@ type PipelineJob struct {
 	Tasks                []PipelineTask                `json:"tasks,omitempty"`
 	Tabs                 []PipelineTab                 `json:"tabs,omitempty"`
 	Artifacts            []PipelineArtifact            `json:"artifacts,omitempty"`
-	ElasticProfileId     string                        `json:elastic_profile_id,omitempty"`
+	ElasticProfileId     string                        `json:"elastic_profile_id,omitempty"`
 }
 
 type PipelineTask struct {

@@ -54,9 +54,9 @@ func TestCreatePipeline(t *testing.T) {
 	pipelineStage.AddJob(pipelineJob)
 
 	materialBranch := "main"
-	pipelineMaterial := PipelineMaterial{
+	material := Material{
 		Type: "git",
-		Attributes: &PipelineMaterialAttributes{
+		Attributes: &MaterialAttributes{
 			Name:         "go-gocd",
 			Url:          "https://github.com/rcjames/go-gocd",
 			Branch:       materialBranch,
@@ -69,7 +69,7 @@ func TestCreatePipeline(t *testing.T) {
 		Group: pipelineGroupName,
 	}
 	pipeline.AddStage(pipelineStage)
-	pipeline.AddMaterial(pipelineMaterial)
+	pipeline.AddMaterial(material)
 
 	pipelineResponse, pipelineEtag, err := c.CreatePipeline(pipeline)
 	require.Empty(t, err, "create pipeline should not have thrown an error")
