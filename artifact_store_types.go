@@ -1,7 +1,7 @@
 package gocd
 
 // A GetAllArtifactStoreResponse object is used for handling the response from
-// the "[Get all artifact stores]" endpoint which contains an _embedded bock
+// the "[Get all artifact stores]" endpoint which contains an _embedded block
 // with the ArtifactStores in.
 //
 // [Get all artifact stores]: https://api.gocd.org/current/#get-all-artifact-stores

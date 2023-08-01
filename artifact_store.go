@@ -134,10 +134,30 @@ func (c *GoCDClient) DeleteArtifactStore(id string) (string, error) {
 	return message.Message, nil
 }
 
+// AddProperty adds a ConfigurationProperty to the properties for an ArtifactStore.
+//
+// Example usage:
+//
+//	artifactStore := ArtifactStore{
+//		Id:     "docker",
+//		Plugin: "cd.go.artifact.docker.registry",
+//	}
+//	artifactStore.AddProperty(ConfigurationProperty{
+//		Key:   "RegistryURL",
+//		Value: "https://your_docker_registry_url",
+//	})
 func (as *ArtifactStore) AddProperty(cp ConfigurationProperty) {
 	as.Properties = append(as.Properties, cp)
 }
 
+// GetProperty searches through the properties for the ArtifactStore for a given
+// key and returns the value. An empty string will be returned if there is no
+// matching key.
+//
+// Example usage:
+//
+//	value := artifactStore.GetPropertyValue("RegistryURL")
+//	fmt.Printf("%s", value)
 func (as *ArtifactStore) GetPropertyValue(key string) string {
 	for _, p := range as.Properties {
 		if p.Key == key {
