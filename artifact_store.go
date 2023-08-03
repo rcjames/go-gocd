@@ -10,7 +10,7 @@ import "fmt"
 //	c := gocd.New(hostname, username, password)
 //	artifactStores, _ := c.GetAllArtifactStores()
 //	for _, a := range artifactStores {
-//	  fmt.Println(a.Id)
+//		fmt.Println(a.Id)
 //	}
 //
 // [Get all artifact stores]: https://api.gocd.org/current/#get-all-artifact-stores
@@ -53,27 +53,27 @@ func (c *GoCDClient) GetArtifactStore(id string) (ArtifactStore, string, error) 
 //
 // Example usage:
 //
-//	 c := gocd.New(hostname, username, password)
-//	 artifactStore := ArtifactStore{
-//		  Id:       "docker",
-//		  PluginId: "cd.go.artifact.docker.registry",
-//	 }
+//	c := gocd.New(hostname, username, password)
+//	artifactStore := ArtifactStore{
+//		Id:       "docker",
+//		PluginId: "cd.go.artifact.docker.registry",
+//	}
 //
-//	 var properties = make(map[string]string)
-//	 properties["RegistryURL"] = "https://your_docker_registry_url"
-//	 properties["Username"] = "admin"
-//	 properties["Password"] = "badger"
-//	 properties["RegistryType"] = "other"
-//	 for k, v := range properties {
-//	   p := ConfigurationProperty{
-//	     Key:   k,
-//	     Value: v,
-//	   }
-//	   artifactStore.AddProperty(p)
-//	 }
+//	var properties = make(map[string]string)
+//	properties["RegistryURL"] = "https://your_docker_registry_url"
+//	properties["Username"] = "admin"
+//	properties["Password"] = "badger"
+//	properties["RegistryType"] = "other"
+//	for k, v := range properties {
+//		p := ConfigurationProperty{
+//	 		Key:   k,
+//			Value: v,
+//		}
+//		artifactStore.AddProperty(p)
+//	}
 //
-//	 artifactStoreResponse, etag, _ := c.CreateArtifactStore(artifactStore)
-//	 fmt.Printf("Plugin Id: %s, ETAG: %s", artifactStoreResponse.PluginId, etag)
+//	artifactStoreResponse, etag, _ := c.CreateArtifactStore(artifactStore)
+//	fmt.Printf("Plugin Id: %s, ETAG: %s", artifactStoreResponse.PluginId, etag)
 //
 // [Create an artifact store]: https://api.gocd.org/current/#create-an-artifact-store
 func (c *GoCDClient) CreateArtifactStore(as ArtifactStore) (ArtifactStore, string, error) {
