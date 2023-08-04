@@ -11,7 +11,6 @@ type GetAllArtifactStoresResponse struct {
 	Links Links `json:"_links,omitempty"`
 	// Embedded is the object containing the response objects
 	Embedded struct {
-		// ArtifactStores is the list of ArtifactStore
 		ArtifactStores []ArtifactStore `json:"artifact_stores"`
 	} `json:"_embedded"`
 }
@@ -24,12 +23,8 @@ type GetAllArtifactStoresResponse struct {
 type ArtifactStore struct {
 	// Links are metadata about requests returned by GoCD. This does not need
 	// to be provided.
-	Links Links `json:"_links,omitempty"`
-	// Id is the name of the plugin instance.
-	Id string `json:"id,omitempty"`
-	// PluginId is the type of plugin to be configured.
-	PluginId string `json:"plugin_id,omitempty"`
-	// Properties configures the plugin. Plugin confiruation should be provided
-	// by the plugin provider.
+	Links      Links                   `json:"_links,omitempty"`
+	Id         string                  `json:"id,omitempty"`
+	PluginId   string                  `json:"plugin_id,omitempty"`
 	Properties []ConfigurationProperty `json:"properties,omitempty"`
 }

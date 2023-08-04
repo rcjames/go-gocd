@@ -14,7 +14,6 @@ type GetAllPipelineGroupsResponse struct {
 	// Links are metadata about requests returned by GoCD. This does not need
 	// to be provided.
 	Embedded struct {
-		// Groups is the list of PipelineGroups
 		Groups []PipelineGroup `json:"groups"`
 	} `json:"_embedded"`
 }
@@ -25,18 +24,14 @@ type GetAllPipelineGroupsResponse struct {
 type PipelineGroup struct {
 	// Links are metadata about requests returned by GoCD. This does not need
 	// to be provided.
-	Links Links `json:"_links,omitempty"`
-	// The name of the pipeline group.
-	Name string `json:"name"`
-	// The authorization configuration for the pipeline group.
+	Links         Links                      `json:"_links,omitempty"`
+	Name          string                     `json:"name"`
 	Authorization PipelineGroupAuthorization `json:"authorization,omitempty"`
-	// The list of pipeline that belong to the pipeline group.
-	Pipelines []struct {
+	Pipelines     []struct {
 		// Links are metadata about requests returned by GoCD. This does not need
 		// to be provided.
-		Links Links `json:"_links,omitempty"`
-		// The name of the pipeline
-		Name string `json:"name"`
+		Links Links  `json:"_links,omitempty"`
+		Name  string `json:"name"`
 	} `json:"pipelines"`
 }
 
@@ -45,20 +40,15 @@ type PipelineGroup struct {
 //
 // [Pipeline group authorization settings]: https://api.gocd.org/current/#the-pipeline-group-authorization-configuration
 type PipelineGroupAuthorization struct {
-	// The list of users and roles with view permission for this pipeline group
-	View PipelineGroupAuthorizationsRule `json:"view,omitempty"`
-	// The list of users and roles with operate permission for this pipeline group
+	View    PipelineGroupAuthorizationsRule `json:"view,omitempty"`
 	Operate PipelineGroupAuthorizationsRule `json:"operate,omitempty"`
-	// The list of users and roles with admin permission for this pipeline group
-	Admins PipelineGroupAuthorizationsRule `json:"admins,omitempty"`
+	Admins  PipelineGroupAuthorizationsRule `json:"admins,omitempty"`
 }
 
 // A PipelineGroupAuthorizationRule contains lists of Users and Roles for use
 // in the PipelineGroupAuthorization object.
 type PipelineGroupAuthorizationsRule struct {
-	// The list of users
 	Users []string `json:"users,omitempty"`
-	// The list of roles
 	Roles []string `json:"roles,omitempty"`
 }
 

@@ -83,18 +83,12 @@ type MaterialAttributesFilter struct {
 //
 // [Get material modifications]: https://api.gocd.org/current/#get-material-modifications
 type MaterialModification struct {
-	// The EmailAddress of the user making the change
-	EmailAddress string `json:"email_address,omitempty"`
-	// The Id for the Material change
-	Id int `json:"id"`
-	// The ModificationTime of the change as a unix timestamp
-	ModificationTime int `json:"modification_time"`
-	// The GoCD UserName for the user who made the change
-	UserName string `json:"user_name,omitempty"`
-	// The Comment left for the change.
-	Comment string `json:"comment,omitempty"`
-	// The Revision hash for the change
-	Revision string `json:"revision"`
+	EmailAddress     string `json:"email_address,omitempty"`
+	Id               int    `json:"id"`
+	ModificationTime int    `json:"modification_time"`
+	UserName         string `json:"user_name,omitempty"`
+	Comment          string `json:"comment,omitempty"`
+	Revision         string `json:"revision"`
 }
 
 // A GetAllMaterialsResponse object is used for handling the response from the
@@ -124,9 +118,7 @@ type GetMaterialModificationsResponse struct {
 	Links Links `json:"_links,omitempty"`
 	// Embedded is the object containing the response objects
 	Embedded struct {
-		// Modifications is the list of MaterialModifications
 		Modifications []MaterialModification `json:"modifications,omitempty"`
-		// Pagination contains the pagination information for the response
-		Pagination Pagination `json:"pagination,omitempty"`
+		Pagination    Pagination             `json:"pagination,omitempty"`
 	} `json:"_embedded"`
 }
