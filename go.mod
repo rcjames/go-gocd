@@ -1,4 +1,4 @@
-module rcjames.co.uk/go-gocd
+module github.com/rcjames/go-gocd
 
 go 1.19
 
