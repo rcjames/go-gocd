@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.3.1](https://github.com/rcjames/go-gocd/compare/v0.3.0...v0.3.1) (2023-08-10)
+
+
+### Bug Fixes
+
+* Trigger a re-release ([#30](https://github.com/rcjames/go-gocd/issues/30)) ([31059cd](https://github.com/rcjames/go-gocd/commit/31059cdf62673685704d524e71ae501421c705db))
+
 ## [0.3.0](https://github.com/rcjames/go-gocd/compare/v0.2.0...v0.3.0) (2023-08-04)
 
 
